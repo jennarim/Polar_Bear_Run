@@ -396,7 +396,7 @@ class Level_01(Level):
                  	[210, 70, 6380, 430],
                  	[210, 70, 6920, 380],
                  	[210, 70, 7480, 280],
-                 	[210, 70, 8030, 280],
+                 	[210, 70, 8030, 330],
                  	[210, 70, 8500, 390],
                  	]
                  	
@@ -631,8 +631,8 @@ def main():
 		#If player finishes, game over
         if player.rect.bottom >= 600 and current_level.world_shift <= -8450:
              screen.fill(BLACK)
-             pygame.mixer.music.load("undertale game over.wav")
-             pygame.mixer.music.play(1, 0.0)
+             #pygame.mixer.music.load("undertale game over.wav")
+             #pygame.mixer.music.play(1, 0.0)
              
              game_over2 = font.render("There were no icebergs left... The bear and all her cubs drowned.", True, WHITE)
              game_over_rect2 = game_over2.get_rect()
