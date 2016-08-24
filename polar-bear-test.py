@@ -21,6 +21,7 @@ screen = pygame.display.set_mode(size)
 
 # Font
 font = pygame.font.SysFont("Courier New", 20, True, False)
+namefont = pygame.font.SysFont("Courier New", 15, True, False)
 
 # Loop until the user clicks the close button.
 done = False
@@ -50,12 +51,14 @@ while not done and display_instructions:
         # Draw instructions, page 1
         logo = pygame.image.load("logo.png")
         logo_rect = logo.get_rect()
-        screen.blit(logo, [125, 100])
+        screen.blit(logo, [125, 150])
  
         text = font.render("Press the Right key to continue instructions", True, WHITE)
         screen.blit(text, [125, 400])
-        text = font.render("Press M to mute during the game", True, WHITE)
-        screen.blit(text, [125, 425])
+        
+        name = namefont.render("Created by: Shabrina Sarnas, Lily Pilblad, Carmen Tang, Jenna Rim", True, WHITE)
+        screen.blit(name, [110, 575])
+        
 
     # Instructions: Page 2
     if instruction_page == 2:
@@ -79,6 +82,9 @@ while not done and display_instructions:
         screen.blit(text, [150, 300])
         image = pygame.image.load("New Piskel2 2.png")
         screen.blit(image, [170, 350])
+        
+        text = font.render("Press M to mute during the game", True, WHITE)
+        screen.blit(text, [200, 570])
 
     # Limit to 60 frames per second
     clock.tick(60)
