@@ -39,7 +39,7 @@ while not done and display_instructions:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RIGHT:
             	instruction_page += 1
-            	if instruction_page == 4:
+            	if instruction_page == 5:
                     display_instructions = False
     clock = pygame.time.Clock()
 
@@ -51,10 +51,10 @@ while not done and display_instructions:
         # Draw instructions, page 1
         logo = pygame.image.load("logo.png")
         logo_rect = logo.get_rect()
-        screen.blit(logo, [125, 150])
+        screen.blit(logo, [140, 150])
  
-        text = font.render("Press the Right key to continue instructions", True, WHITE)
-        screen.blit(text, [125, 400])
+        text = font.render("Press the right arrow key to continue.", True, WHITE)
+        screen.blit(text, [170, 400])
         
         name = namefont.render("Created by: Shabrina Sarna, Lily Pilblad, Carmen Tang, Jenna Rim", True, WHITE)
         screen.blit(name, [110, 575])
@@ -64,27 +64,37 @@ while not done and display_instructions:
     if instruction_page == 2:
         # Draw instructions, page 2
         text = font.render("Get to the end while saving your cubs on the way!", True, WHITE)
-        screen.blit(text, [100, 30])
+        screen.blit(text, [100, 75])
         text = font.render("Save your cubs by stopping near them.", True, WHITE)
-        screen.blit(text, [100, 55])
+        screen.blit(text, [100, 100])
         
         image = pygame.image.load("New Piskel 4.png")
         screen.blit(image, [250, 250])
-    
+
     # Instructions: Page 3
     if instruction_page == 3:
-        text = font.render("Press the up key to jump.", True, WHITE)
-        screen.blit(text, [150, 20])
+        text = font.render("If you don't stop, then you won't be able to save them.", True, WHITE)
+        screen.blit(text, [75, 75])
+        image = pygame.image.load("New Piskel 5.png")
+        screen.blit(image, [250, 175])
+        
+        text = font.render("So just go back!", True, WHITE)
+        screen.blit(text, [300, 500])
+        
+    # Instructions: Page 3
+    if instruction_page == 4:
+        text = font.render("Press the up arrow key to jump.", True, WHITE)
+        screen.blit(text, [225, 20])
         image = pygame.image.load("New Piskel.png")
-        screen.blit(image, [200, 40])
+        screen.blit(image, [200, 50])
         
-        text = font.render("Press the left and right keys to move.", True, WHITE)
-        screen.blit(text, [150, 300])
+        text = font.render("Press the left and right arrow keys to move.", True, WHITE)
+        screen.blit(text, [150, 325])
         image = pygame.image.load("New Piskel2 2.png")
-        screen.blit(image, [170, 350])
+        screen.blit(image, [220, 375])
         
-        text = font.render("Press M to mute during the game", True, WHITE)
-        screen.blit(text, [200, 570])
+        text = font.render("Press M to mute during the game.", True, WHITE)
+        screen.blit(text, [200, 550])
 
     # Limit to 60 frames per second
     clock.tick(60)
@@ -514,6 +524,7 @@ def main():
             		    if (baby.rect.x < 390):
             		        baby.rect.x = -1000
             		    i += 1
+            		
             		
             	if event.key == pygame.K_w:
             		player.rect.x = 8500
