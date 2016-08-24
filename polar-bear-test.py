@@ -9,9 +9,8 @@ pygame.mixer.music.play(-1, 0.0)
  
 # Colors
 BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-GREEN = (0, 255, 0)
 RED = (255, 0, 0)
+WHITE = (255, 255, 255)
 BLUE = (135, 206, 250)
  
 # Screen dimensions
@@ -20,22 +19,13 @@ SCREEN_HEIGHT = 600
 size = (SCREEN_WIDTH, SCREEN_HEIGHT)
 screen = pygame.display.set_mode(size)
 
-# List of facts about the severity of global warming
-#fact_list = ["Scientists predict that as the Arctic continues to warm, two thirds of the world's polar bears could disappear within this century.", \
-			 #"If everyone lived the way people do in the U.S., it would take five planet Earths to provide enough resources for everyone.", \
-			#"Just five countries - including the United States - create more than 50% of the global carbon dioxide emissions.", \
-			# "In 2010, the world produced nearly 34 billion metric tons of carbon dioxide from fossil fuel burning, cement production, and gas flaring.", \
-			# "2014 was the world's hottest year on record. The average global sea level is expected to rise 7-23 inches before the end of this century.", \
-			# "Polar bears aren't the only species being threatened by global warming! Reindeer, penguins, and coldwater fish are harmed as well.", \
-			# "Polar bears rely on the sea ice to hunt for seals. However, as the earth gets warmer, ice melts, making it harder to find food. The bears have turned to other food sources, such as bird eggs, but this is not enough.", \
-			#]
-
 # Font
 font = pygame.font.SysFont("Courier New", 20, True, False)
 
 # Loop until the user clicks the close button.
 done = False
 
+#Instruction Variables
 display_instructions = True
 instruction_page = 1
  
@@ -55,11 +45,9 @@ while not done and display_instructions:
     # Set the screen background
     screen.fill(BLUE)
  
+    # Instructions: Page 1
     if instruction_page == 1:
         # Draw instructions, page 1
-        # This could also load an image created in another program.
-        # That could be both easier and more flexible.
- 
         logo = pygame.image.load("logo.png")
         logo_rect = logo.get_rect()
         screen.blit(logo, [125, 100])
@@ -69,17 +57,18 @@ while not done and display_instructions:
         text = font.render("Press M to mute during the game", True, WHITE)
         screen.blit(text, [125, 425])
 
- 
+    # Instructions: Page 2
     if instruction_page == 2:
         # Draw instructions, page 2
         text = font.render("Get to the end while saving your cubs on the way!", True, WHITE)
         screen.blit(text, [100, 30])
-        text = font.render("Save your cubs by stopping on them.", True, WHITE)
+        text = font.render("Save your cubs by stopping near them.", True, WHITE)
         screen.blit(text, [100, 55])
         
         image = pygame.image.load("New Piskel 4.png")
         screen.blit(image, [250, 250])
-        
+    
+    # Instructions: Page 3
     if instruction_page == 3:
         text = font.render("Press the up key to jump.", True, WHITE)
         screen.blit(text, [150, 20])
@@ -90,25 +79,23 @@ while not done and display_instructions:
         screen.blit(text, [150, 300])
         image = pygame.image.load("New Piskel2 2.png")
         screen.blit(image, [170, 350])
-    
-        
- 
+
     # Limit to 60 frames per second
     clock.tick(60)
  
-    # Go ahead and update the screen with what we've drawn.
+    # Updates the screen with what we've drawn.
     pygame.display.flip()
     
 
 # Class: Snowflake
 class SnowFlake():
-    def __init__(self, size, position, wind=False): #initialize it and define attributes: size, position, wind
+    def __init__(self, size, position, wind=False):
         self.size = size
         self.position = position
         self.wind = wind 
     
     def fall(self, speed):
-        self.position[1] += speed #this moves the snowflake in some positive y direction
+        self.position[1] += speed
         if self.wind:
             self.position[0] += random.randint(-speed, speed) 
         
@@ -123,9 +110,7 @@ snow_list = []
 
 # Class: Player
 class Player(pygame.sprite.Sprite):
-    def __init__(self):
-        """ Constructor function """
- 
+    def __init__(self): 
         # Call the parent's constructor
         super().__init__()
  
@@ -139,8 +124,7 @@ class Player(pygame.sprite.Sprite):
         # List of sprites we can bump against
         self.level = None
  
-    def update(self):
-        """ Move the player. """
+    def update(self):  # Moves the player. 
         # Gravity
         self.calc_grav()
  
@@ -150,8 +134,7 @@ class Player(pygame.sprite.Sprite):
         # See if we hit anything
         block_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
         for block in block_hit_list:
-            # If we are moving right,
-            # set our right side to the left side of the item we hit
+            # If we are moving right, set our right side to the left side of the item we hit
             if self.change_x > 0:
                 self.rect.right = block.rect.left
             elif self.change_x < 0:
@@ -283,6 +266,7 @@ class Platform3(pygame.sprite.Sprite):
 		self.image = pygame.image.load("platform3.png")
 		self.rect = self.image.get_rect()
 
+# Class : Cub
 class Cub(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -290,11 +274,8 @@ class Cub(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         
 
-# Class: Level
+# Parent Class: Level
 class Level(object):
-    """ This is a generic super-class used to define a level.
-        Create a child class for each level with level-specific
-        info. """
     platform_list = None
     platform2_list = None
     platform3_list = None
@@ -315,7 +296,6 @@ class Level(object):
  
     # Update everything on this level
     def update(self):
-        """ Update everything in this level."""
         self.platform_list.update()
         self.platform2_list.update()
         self.platform3_list.update()
@@ -354,17 +334,17 @@ class Level(object):
             cub.rect.x += shift_x
 
  
-# Class: Create platforms for the level
+# Child Class: Level
 class Level_01(Level):
     """ Definition for level 1. """
  
     def __init__(self, player):
         """ Create level 1. """
  
-        # Call the parent constructor
+        # Calls the parent constructor
         Level.__init__(self, player)
  
-        # Array with width, height, x, and y of platform
+        # Width, Height, and Coordinates of the Low Stage Platform
         level = [[210, 70, 200, 500],
                  [210, 70, 900, 450],
                  [210, 70, 1600, 400],
@@ -380,7 +360,7 @@ class Level_01(Level):
             block.player = self.player
             self.platform_list.add(block)
         
-        
+        # Width, Height, and Coordinates of the Cubs
         level_cub = [[210, 70, 400, 430],
                  	[210, 70, 1100, 380],
                  	[210, 70, 1900, 330],
@@ -405,15 +385,14 @@ class Level_01(Level):
             bae = Cub()
             bae.rect.x = cub[2]
             bae.rect.y = cub[3]
-            #cub_block.player = self.player
             self.cub_list.add(bae)
             
-        # Array with width, height, x, and y of platform2
-        level_2 = [[210, 70, 3320, 500],
-                 [210, 70, 3930, 450],
-                 [210, 70, 4540, 350],
-                 [210, 70, 5150, 350],
-                 [210, 70, 5760, 400],
+        # Width, Height, and Coordinates of the Medium Stage Platform
+        level_2 = [[800, 70, 3320, 500],
+                 [800, 70, 3930, 450],
+                 [800, 70, 4540, 350],
+                 [800, 70, 5150, 350],
+                 [800, 70, 5760, 400],
                  ]
                  
         # Go through the array above and add platforms2
@@ -423,13 +402,14 @@ class Level_01(Level):
             block2.rect.y = platform2[3]
             block2.player = self.player
             self.platform2_list.add(block2)
-            
-        level_3 = [[210, 70, 6310, 500],
-                 [210, 70, 6860, 450],
-                 [210, 70, 7410, 350],
-                 [210, 70, 7960, 400],
-                 [210, 70, 8510, 450],
-                 ]
+        
+        # Width, Height, and Coordinates of the High Stage Platform
+        level_3 = [[900, 70, 6310, 500], \
+                  [900, 70, 6860, 450], \
+                  [900, 70, 7410, 350], \
+                  [900, 70, 7960, 400], \
+                  [900, 70, 8510, 450], \
+                  ]
         
         for platform3 in level_3:
         	block3 = Platform3(platform3[0], platform3[1])
@@ -439,8 +419,6 @@ class Level_01(Level):
         	self.platform3_list.add(block3)
 
             
-	
-#cub_list = pygame.sprite.Group()
 def main():
     """ Main Program """
     pygame.init()
@@ -454,7 +432,7 @@ def main():
     # Create the player
     player = Player()
  
-    # Create all the levels
+    # Create the level
     level_list = []
     level1 = Level_01(player)
     level_list.append( level1 )
@@ -512,28 +490,24 @@ def main():
                         pygame.mixer.music.play(-1, 0.0)
                         sound.set_volume(1)
                     music = not music
-                
             
             if event.type == pygame.KEYDOWN:
-            	if event.key == pygame.K_r:
+            	if event.key == pygame.K_c:
             		pygame.mixer.music.load("Synthesia_I_Need_A_Hero_125.wav")
             		pygame.mixer.music.play(-1, 0.0)
-            		player.rect.x = 200
+            		player.rect.x = 0
             		player.rect.y = 200
-            		level_list = []
+            		#level_list = []
             		level_list.append( Level_01(player) )
             		current_level_no = 0
             		current_level = level_list[current_level_no]
             		player.level = current_level
-            		
+
             		i = 0
             		for baby in level1.cub_list:
             		    if (baby.rect.x < 390):
             		        baby.rect.x = -1000
             		    i += 1
-            		#snowflake = SnowFlake(5, [random.randint(0, 750), 0], wind = True)
-            		#snow_list.append(snowflake)
-            		
             		
             	if event.key == pygame.K_w:
             		player.rect.x = 8500
@@ -550,19 +524,7 @@ def main():
  
         # Update items in the level
         current_level.update()
-        
-        # ---------------------
-        # See if the player block has collided with anything.
-        #cubs_hit_list = pygame.sprite.spritecollide(player, cub_list, True)
-        
-        # Check the list of collisions.
-        #for cub in cubs_hit_list:
-            #score += 1
-        
-        #score = 0
-        #score_text = font.render("Score: " +str(score), True, WHITE)
-        #screen.blit(score_text, [400, 430])
-        # --------------------        
+
         current_level.draw(screen)
         active_sprite_list.draw(screen)
 
@@ -576,14 +538,9 @@ def main():
         if player.rect.left < 0:
             player.rect.left = 0
         
-        print(player.rect.bottom)
- 		
-
+        # Test Code for player.rect.bottom
+        #print(player.rect.bottom)
         
-        #more = font.render("For more ways to slow global warming and save the polar bears, go to out website.", True, WHITE)
-        #screen.blit(more, [400, 400])
-        
- 		
         # ALL CODE TO DRAW SHOULD GO BELOW THIS COMMENT
         snowflake = SnowFlake(5, [random.randint(0, 750), 0], wind = True)
         snow_list.append(snowflake)
@@ -606,9 +563,9 @@ def main():
             snow_stopped_y = (screen.get_height() / 2 - snow_stopped_rect.height /2) - 200
             screen.blit(bear_talks, [snow_stopped_x, snow_stopped_y])
        
-       # Bear reaction to High Stage PLatform
+       # Bear reaction to High Stage Platform
         if current_level.world_shift <= -6310:
-            pygame.draw.rect(screen, BLUE, (snow_stopped_x, snow_stopped_y, 400, 25), 0)
+            pygame.draw.rect(screen, BLUE, (snow_stopped_x - 100, snow_stopped_y, 400, 25), 0)
             bear_talks = font.render("The ice is getting smaller...!", True, WHITE)
             screen.blit(bear_talks, [snow_stopped_x, snow_stopped_y])
        
@@ -621,7 +578,7 @@ def main():
              game_over_y = (screen.get_height() / 2 - game_over_rect.height /2)
              screen.blit(game_over, [game_over_x, game_over_y - 100])
             
-             replay = font.render("Press R to restart.", True, WHITE)
+             replay = font.render("Press C to continue.", True, WHITE)
              replay_rect = replay.get_rect()
              replay_x = screen.get_width() / 2 - replay_rect.width /2
              replay_y = (screen.get_height() / 2 - replay_rect.height /2)
@@ -631,8 +588,7 @@ def main():
 		#If player finishes, game over
         if player.rect.bottom >= 600 and current_level.world_shift <= -8450:
              screen.fill(BLACK)
-             #pygame.mixer.music.load("undertale game over.wav")
-             #pygame.mixer.music.play(1, 0.0)
+             pygame.mixer.music.play(1, 0.0)
              
              game_over2 = font.render("There were no icebergs left... The bear and all her cubs drowned.", True, WHITE)
              game_over_rect2 = game_over2.get_rect()
@@ -669,6 +625,13 @@ def main():
              fact_rect_x = screen.get_width() /2 - fact_rect.width /2
              fact_rect_y = screen.get_height() / 2 - fact_rect.height /2
              screen.blit(check, [fact_rect_x, fact_rect_y + 100])
+             
+             website = font.render("sabrinas78.github.io/final-master/PolarBearRun/index.html", True, WHITE)
+             website_rect = website.get_rect()
+             website_rect_x = screen.get_width() /2 - website_rect.width /2
+             website_rect_y = screen.get_width() /2 - website_rect.height /2
+             screen.blit(website, [website_rect_x, website_rect_y + 100])
+             
              
              #play_more = font.render("Press R to play again.", True, WHITE)
              #fact_rect = play_more.get_rect()
