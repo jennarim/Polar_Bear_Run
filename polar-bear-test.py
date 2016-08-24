@@ -56,7 +56,7 @@ while not done and display_instructions:
         text = font.render("Press the Right key to continue instructions", True, WHITE)
         screen.blit(text, [125, 400])
         
-        name = namefont.render("Created by: Shabrina Sarnas, Lily Pilblad, Carmen Tang, Jenna Rim", True, WHITE)
+        name = namefont.render("Created by: Shabrina Sarna, Lily Pilblad, Carmen Tang, Jenna Rim", True, WHITE)
         screen.blit(name, [110, 575])
         
 
